@@ -1,5 +1,5 @@
 
-SayCheese v1.0
+SayCheese v2.0
 
 ____________________________________________________________________________________________________________________________________________________________________
 
@@ -34,7 +34,7 @@ Ngrok or Serveo.net for port forwarding
 ## Installing (Kali Linux/Termux):
 
 ```
-git clone https://github.com/thelinuxchoice/saycheese
+git clone https://github.com/tony-Stank3000/Say-Cheese_V2
 cd saycheese
 bash saycheese
 ```
@@ -54,6 +54,7 @@ This project is licensed under the MIT License.
 ->>Acknowledgments:
 
 Created by @thelinuxchoice
+updated by @tony-Stank3000
 
 Inspired by the need for better security awareness and ethical hacking practices.
 
