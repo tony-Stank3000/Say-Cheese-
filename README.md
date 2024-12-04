@@ -12,7 +12,7 @@ SayCheese is an open-source tool for ethical hacking and penetration testing. It
 
 Generates phishing links using Serveo.net or Ngrok for port forwarding.
 
-Captures images via the target's device camera.
+Captures videos via the target's device camera.
 
 Logs IP addresses of connected devices.
 
